@@ -25,6 +25,19 @@ plugins {
     id("org.nosphere.apache.rat") version "0.4.0"
 }
 
+dependencies {
+    api(project(":knotx-template-engine-api"))
+
+    implementation(group = "io.vertx", name = "vertx-core")
+    implementation(group = "io.vertx", name = "vertx-service-proxy")
+    implementation(group = "io.vertx", name = "vertx-rx-java2")
+    implementation(group = "com.google.guava", name = "guava")
+
+    testImplementation("io.knotx:knotx-junit5:${project.version}")
+    testImplementation(group = "org.mockito", name = "mockito-core")
+    testImplementation(group = "org.mockito", name = "mockito-junit-jupiter")
+}
+
 tasks {
     named<RatTask>("rat") {
         excludes.addAll("*.md", "**/build/*", "**/out/*", "**/generated/*", "**/*.adoc", "**/resources/*", "gradle.properties")
