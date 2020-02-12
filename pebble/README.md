@@ -38,3 +38,18 @@ You can reconfigure an engine as follows in the pebble engine entry section:
     }
   }
 ```
+
+## Known issues
+
+### Dashed variables
+
+When referencing variables with dash `-` character, the `.` operator cannot be used. 
+Pebble provides an alternative solution: the `[]` operator. 
+When printing a variable `dashed-var` under `dashed-var-parent` which is under `data` node, the following construction can be used:
+`{{ data['dashed-var-parent']['dashed-var'] }}`.
+ 
+This, however, does not help when a root variable has dashes (`{{ ['dashed-data'] }}` will not work).
+To solve this issue, a special `wrappingRootNodeName` option is provided the in [PebbleEngineSyntaxOptions](https://github.com/Knotx/knotx-template-engine/blob/master/pebble/docs/asciidoc/dataobjects.adoc#PebbleEngineSyntaxOptions). If this option is not empty, the `payload` of the templated `Fragment` will be wrapped in a `JsonObject` with `wrappingRootNodeName` as key.
+For example, if `wrappingRootNodeName = root`, the variable above is referenced by `{{ root['dashed-data'] }}`. As a result, all context variable references have to be preceded by this root variable.
+
+This feature is not enabled by default.
