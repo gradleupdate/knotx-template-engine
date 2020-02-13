@@ -24,7 +24,8 @@ In order to use different symbols as below
   <h2>Snippet1 - {: message :}</h2>
 </div>
 ```
-You can reconfigure an engine as follows in the pebble engine entry section:
+You can reconfigure an engine as follows in the pebble engine entry section (remember to do it on the module level, 
+not in the action definition - it won't work):
 ```hocon
   {
     factory = pebble
@@ -58,3 +59,24 @@ For example, if `wrappingRootNodeName = root`, the variable above is referenced 
 As a result, all context variable references have to be preceded by this root variable.
 
 This feature is not enabled by default.
+
+### Example of use
+
+```html
+<knotx:snippet data-knotx-task="payments-task">
+  <div>
+    <h2>Payment providers</h2>
+    <ul>
+      {% for this in root['fetch-payment-providers']['_result'] %}
+      <li>
+        <p>Payment provider: {{this.name}}</p>
+        <p>Payment URL: {{this.paymentUrl}}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</knotx:snippet>
+```
+
+Please notice, that when you're using dashed variables, you have to use `['dashed-variable']` syntax, without it
+templating won't work in any case.
